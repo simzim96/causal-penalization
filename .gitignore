@@ -20,6 +20,7 @@ wheels/
 .installed.cfg
 *.egg
 
+main_simulation copy/
 # Virtual Environments
 .env
 .venv

@@ -70,36 +70,3 @@ def causal_penalized_estimator_iterative(X_envs, Y_envs, lambda_reg, tol=1e-6, m
     else:
         return beta, beta_envs
 
-def plot_beta_convergence(beta_history, true_beta, max_plot=None, save_path=None):
-    """
-    Plot the convergence of beta values over iterations.
-    
-    Parameters:
-        beta_history (list of np.array): History of beta values from the estimator.
-        save_path (str, optional): Path to save the plot. If None, the plot is displayed.
-    """
-    beta_history = np.array(beta_history)
-    iterations = np.arange(len(beta_history))
-    
-    plt.figure(figsize=(10, 6))
-    for i in range(beta_history.shape[1]):
-        if max_plot is not None and i > max_plot:
-            break
-        plt.plot(iterations, beta_history[:, i], label=f'Coefficient {i+1}')
-
-    for i in range(beta_history.shape[1]):
-        if max_plot is not None and i > max_plot:
-            break
-        plt.axhline(y=true_beta[i], linestyle='--', color='black', linewidth=1)
-    plt.xlabel('Iteration')
-    plt.ylabel('Beta Value')
-    plt.title('Convergence of Beta Values')
-    plt.legend()
-    plt.grid(True)
-    
-    if save_path:
-        plt.savefig(save_path)
-        plt.close()
-    else:
-        plt.tight_layout()
-        plt.show()
