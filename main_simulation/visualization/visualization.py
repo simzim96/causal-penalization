@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plot_spatial_events(events, title="Simulated Marked Spatio-Temporal Hawkes Process"):
+def plot_spatial_events(events, title="Simulated Marked Spatio-Temporal Hawkes Process", save_path=None):
     """
     Visualize spatial locations of events with time as color.
     
@@ -15,8 +15,8 @@ def plot_spatial_events(events, title="Simulated Marked Spatio-Temporal Hawkes P
     plt.xlabel("X")
     plt.ylabel("Y")
     plt.title(title)
-    plt.show()
-
+    plt.savefig(save_path)
+    plt.close()
 def plot_beta_comparison(beta_np_list, beta_p_list, beta_true, save_path=None):
     """
     Create a boxplot comparing beta estimates from non-penalized and penalized methods.
@@ -37,7 +37,7 @@ def plot_beta_comparison(beta_np_list, beta_p_list, beta_true, save_path=None):
     ax.set_ylabel('β Estimate')
     ax.set_title('Comparison of β Estimates: Non-Penalized vs Penalized')
     ax.legend()
-    plt.show()
     
     if save_path:
         plt.savefig(save_path) 
+    plt.close()
