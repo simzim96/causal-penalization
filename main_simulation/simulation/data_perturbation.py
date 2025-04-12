@@ -41,7 +41,10 @@ def perturb_environments_flags(events_list, perturb_fraction=0.5,
                 if remove_indices is None:
                     remove_indices = [0]
                 for idx in remove_indices:
-                    events_copy[:, 3 + idx] = 0
+                    try:
+                        events_copy[:, 3 + idx] = 0
+                    except:
+                        print(f"Error: {events_copy[:, 3 + idx]}")
             
             # Perturb time offset: add a constant to the event times (column 0)
             if perturb_time_offset:
