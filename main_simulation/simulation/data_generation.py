@@ -1,7 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 
-def simulate_marked_hawkes(mu, alpha, beta, sigma, T, region, num_cov=2, true_gamma=None, max_events=30):
+def simulate_marked_hawkes(mu, alpha, beta, sigma, T, region, num_cov=2, true_gamma=None, max_events=90):
     """
     Simulate a marked spatio-temporal Hawkes process with an arbitrary number of covariates.
     

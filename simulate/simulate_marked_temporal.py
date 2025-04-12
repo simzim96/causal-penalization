@@ -4,11 +4,37 @@ def simulate_marked_hawkes(mu, alpha, beta, sigma, T, region, seed=None):
     """
     Simulate a marked spatio-temporal Hawkes process with covariates.
     
-    Each event is represented as (t, x, y, z1, z2), where (x,y) is the spatial location 
-    and (z1,z2) are covariates. Immigrant events are generated with constant intensity,
-    and their covariates are drawn uniformly from [0,1]. Offspring events are generated
-    using an exponential waiting time and Gaussian spatial displacement; their covariates 
-    are inherited from the parent with added Gaussian noise.
+    This function generates a realization of a marked spatio-temporal Hawkes process,
+    which models self-exciting point processes where each event increases the probability
+    of future events. The process consists of:
+    
+    1. Background (immigrant) events generated according to a homogeneous Poisson process 
+       with intensity μ across the spatial region.
+    2. Offspring events triggered by previous events, where the number of offspring follows 
+       a Poisson distribution with mean α (branching ratio).
+    
+    Each event is represented as (t, x, y, z1, z2), where:
+      - t: timestamp
+      - (x,y): spatial location 
+      - (z1,z2): covariates (marks)
+    
+    Parameters:
+        mu (float): Background intensity (events per unit space-time)
+        alpha (float): Branching ratio (expected number of direct offspring per event)
+        beta (float): Temporal decay rate for the exponential triggering kernel
+        sigma (float): Spatial standard deviation for the Gaussian triggering kernel
+        T (float): End time of the observation period
+        region (tuple): Spatial region as (xmin, xmax, ymin, ymax)
+        seed (int, optional): Random seed for reproducibility. Defaults to None.
+    
+    Returns:
+        np.array: Array of events with shape (n_events, 5), where each row contains
+                 [t, x, y, z1, z2] for an event.
+    
+    Notes:
+        - Immigrant events have covariates drawn uniformly from [0,1]
+        - Offspring events inherit covariates from their parent with added Gaussian noise
+        - Events are sorted chronologically in the output
     """
     if seed is not None:
         np.random.seed(seed)
@@ -57,10 +83,32 @@ def simulate_marked_hawkes(mu, alpha, beta, sigma, T, region, seed=None):
 
 def generate_data(num_env, mu, alpha, beta, sigma, gamma1, gamma2, T, region, seeds=None):
     """
-    Generate simulation data for a specified number of environments.
+    Generate simulation data for multiple environments of marked Hawkes processes.
+    
+    This function creates multiple realizations of the marked spatio-temporal Hawkes process,
+    each representing a different environment. This is useful for testing causal inference
+    methods across environments with the same underlying parameters but different realizations.
+    
+    Parameters:
+        num_env (int): Number of environments to generate
+        mu (float): Background intensity (events per unit space-time)
+        alpha (float): Branching ratio (expected number of direct offspring per event)
+        beta (float): Temporal decay rate for the exponential triggering kernel
+        sigma (float): Spatial standard deviation for the Gaussian triggering kernel
+        gamma1 (float): First covariate effect parameter
+        gamma2 (float): Second covariate effect parameter
+        T (float): End time of the observation period
+        region (tuple): Spatial region as (xmin, xmax, ymin, ymax)
+        seeds (list of int, optional): Random seeds for each environment. If None,
+                                      uses sequential seeds starting from 100.
     
     Returns:
-        events_list: List of event arrays (one per environment).
+        list: List of np.arrays, where each array contains the events for one environment
+              in the format [t, x, y, z1, z2].
+    
+    Notes:
+        - Prints summary statistics for each generated environment
+        - Different seeds ensure independent realizations across environments
     """
     if seeds is None:
         # If seeds are not provided, use default different seeds.

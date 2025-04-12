@@ -7,7 +7,32 @@ from estimation import get_bounds, estimate_non_penalized, estimate_penalized
 from visualization import plot_spatial_events, plot_beta_comparison
 
 def setup_parameters():
-    """Set up simulation parameters."""
+    """
+    Set up simulation parameters for the marked spatio-temporal Hawkes process.
+    
+    This function defines all the parameters needed for simulating and estimating
+    the marked spatio-temporal Hawkes process, including:
+    
+    1. True model parameters (μ, α, β, σ, γ)
+    2. Simulation parameters (time horizon, spatial region)
+    3. Estimation parameters (initial guess, bounds, penalty strength)
+    
+    Returns:
+        dict: Dictionary containing all simulation parameters:
+            - mu_true: Background intensity
+            - alpha_true: Branching ratio
+            - beta_true: Temporal decay rate
+            - sigma_true: Spatial standard deviation
+            - num_cov: Number of covariates
+            - true_gamma: Covariate effect parameters
+            - true_params: Combined parameter vector
+            - T: End time of observation period
+            - region: Spatial region as (xmin, xmax, ymin, ymax)
+            - area: Area of the spatial region
+            - initial_guess: Initial parameter values for optimization
+            - bounds: Parameter bounds for optimization
+            - kappa: Penalty strength for penalized estimation
+    """
     # True simulation parameters
     mu_true = 0.0005        
     alpha_true = 0.5        
@@ -47,7 +72,42 @@ def setup_parameters():
 
 def run_simulation(params, scenario_name, perturb_cov_shift=False, perturb_cov_remove=False, 
                   perturb_time_offset=False, num_env=7, nsim=20):
-    """Run a simulation with specified perturbation scenario."""
+    """
+    Run a simulation experiment with specified perturbation scenario.
+    
+    This function conducts a complete simulation experiment, including:
+    1. Generating data for multiple environments
+    2. Applying specified perturbations to create environment shifts
+    3. Performing non-penalized and penalized parameter estimation
+    4. Comparing estimation results with true parameters
+    5. Generating visualizations
+    6. Running multiple simulations to assess parameter convergence
+    
+    Parameters:
+        params (dict): Simulation parameters from setup_parameters()
+        scenario_name (str): Name of the perturbation scenario for file naming
+        perturb_cov_shift (bool, optional): Whether to apply covariate shifts to some
+                                           environments. Defaults to False.
+        perturb_cov_remove (bool, optional): Whether to remove covariates from some
+                                            environments. Defaults to False.
+        perturb_time_offset (bool, optional): Whether to apply time offsets to some
+                                             environments. Defaults to False.
+        num_env (int, optional): Number of environments to simulate. Defaults to 7.
+        nsim (int, optional): Number of simulations for convergence analysis. Defaults to 20.
+    
+    Returns:
+        dict: Results dictionary containing:
+            - theta_global_np: Global non-penalized parameter estimates
+            - theta_global_p: Global penalized parameter estimates
+            - error_b1_np: Error in first covariate parameter (non-penalized)
+            - error_b1_p: Error in first covariate parameter (penalized)
+            - beta_np_list: List of β estimates across simulations (non-penalized)
+            - beta_p_list: List of β estimates across simulations (penalized)
+    
+    Notes:
+        - Creates visualization plots in the 'plots' directory
+        - Prints detailed comparison of estimates with true parameters
+    """
     print(f"\n==== Running simulation: {scenario_name} ====")
     
     # Create plots directory if it doesn't exist
@@ -192,6 +252,24 @@ def run_simulation(params, scenario_name, perturb_cov_shift=False, perturb_cov_r
     }
 
 def main():
+    """
+    Main function to run the simulation experiments.
+    
+    This function:
+    1. Sets up simulation parameters
+    2. Defines different perturbation scenarios
+    3. Runs simulations for each scenario
+    4. Summarizes and prints results
+    
+    The following scenarios are evaluated:
+    - No perturbation: All environments follow the same data generation process
+    - Covariate shift: Some environments have shifted covariate values
+    - Covariate removal: Some environments have removed covariates
+    - All perturbations: Combination of covariate shifts, removals, and time offsets
+    
+    Each scenario helps evaluate the robustness of penalized vs. non-penalized estimation
+    under different types of environmental heterogeneity.
+    """
     # Set up parameters
     params = setup_parameters()
     

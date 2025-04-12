@@ -283,6 +283,23 @@ def visualize_results(results, plot_ids):
         print("No penalized results to plot")
 
 def main():
+    """
+    Main function to analyze forest defoliation data using causal penalization.
+    
+    This function:
+    1. Loads the forest data from CSV files
+    2. Prepares the data by grouping it into environments based on plot numbers
+    3. Performs both non-penalized and penalized regression analysis
+    4. Visualizes the results of different penalization strengths
+    5. Prints a summary of coefficient values
+    
+    The analysis examines how environmental factors influence tree crown defoliation
+    across different forest plots, using a causal penalization approach to identify
+    invariant relationships. Features include spatial coordinates and social status
+    of trees, with total crown defoliation as the target variable.
+    
+    Results are saved as plots in the pfynforest/analyze_data/plots directory.
+    """
     # Path to the CSV file (update the path if needed)
     
     # Load data
