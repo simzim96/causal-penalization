@@ -44,7 +44,7 @@ def perturb_environments_flags(events_list, perturb_fraction=0.5,
                     try:
                         events_copy[:, 3 + idx] = 0
                     except:
-                        print(f"Error: {events_copy[:, 3 + idx]}")
+                        print(f"Error: Id out of bound.")
             
             # Perturb time offset: add a constant to the event times (column 0)
             if perturb_time_offset:
