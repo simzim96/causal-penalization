@@ -34,7 +34,10 @@ def perturb_environments_flags(events_list, perturb_fraction=0.5,
         if i in indices_to_perturb:
             # Perturb covariate shift: add shift_value to all covariate columns (columns 3 onward)
             if perturb_cov_shift:
-                events_copy[:, 3:] += shift_value * np.random.randn()
+                try:
+                    events_copy[:, 3:] += shift_value * np.random.randn()
+                except:
+                    print(f"Error: Id out of bound.")
             
             # Perturb covariate removal: set specified covariate columns to zero.
             if perturb_cov_remove:
