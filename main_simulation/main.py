@@ -36,7 +36,7 @@ def setup_parameters():
     # True simulation parameters
     mu_true = 0.0005        
     alpha_true = 0.5        
-    beta_true = 1.5         
+    beta_true = 0.8         
     sigma_true = 0.5        
     
     # Set true covariate effects
@@ -133,13 +133,13 @@ def run_simulation(params, scenario_name, perturb_cov_shift=False, perturb_cov_r
 
     events_list = perturb_environments_flags(
         events_list, 
-        perturb_fraction=0.5,
+        perturb_fraction=0.3,
         perturb_cov_shift=perturb_cov_shift, 
-        shift_value=0.5,
+        shift_value=0.3,
         perturb_cov_remove=perturb_cov_remove, 
         remove_indices=remove_indices,
         perturb_time_offset=perturb_time_offset, 
-        time_offset=10.0
+        time_offset=2.0
     )
     
     # Run non-penalized estimation
@@ -216,7 +216,7 @@ def run_simulation(params, scenario_name, perturb_cov_shift=False, perturb_cov_r
             perturb_cov_remove=perturb_cov_remove, 
             remove_indices=remove_indices,
             perturb_time_offset=perturb_time_offset, 
-            time_offset=10.0
+            time_offset=0
         )
         
         _, theta_global_np = estimate_non_penalized(
@@ -309,7 +309,7 @@ def main():
             perturb_cov_shift=scenario['cov_shift'],
             perturb_cov_remove=scenario['cov_remove'],
             perturb_time_offset=scenario['time_offset'],
-            num_env=9,
+            num_env=7,
             nsim=80
         )
     
