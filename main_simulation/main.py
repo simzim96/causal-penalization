@@ -310,7 +310,7 @@ def main():
             perturb_cov_remove=scenario['cov_remove'],
             perturb_time_offset=scenario['time_offset'],
             num_env=7,
-            nsim=80
+            nsim=2000
         )
     
     # Print summary of results
