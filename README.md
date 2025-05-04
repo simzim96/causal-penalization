@@ -337,14 +337,11 @@ Guidelines for contributing:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
-
-[MIT License](LICENSE)
 
 ## Citation
 
 If you use this code in your research, please cite:
 
 ```
-Zimmermann, S. (2023). Causal Penalization: A Framework for Identifying Invariant Parameters Across Environments.
+Zimmermann, S. Causal Regularization for Marked Spatial Point Processes (2025).
 ``` 
